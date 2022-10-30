@@ -11,7 +11,7 @@ pipeline {
                 
                 sh """
                     
-                    docker build . -f dockerfile -t ahmedhedihed/bakehouse:$BUILD_NUMBER
+                    docker build .  -t ahmedhedihed/bakehouse:$BUILD_NUMBER
                     docker login -u ${USERNAME} -p ${PASSWORD}
                     docker push ahmedhedihed/bakehouse:$BUILD_NUMBER
                     
