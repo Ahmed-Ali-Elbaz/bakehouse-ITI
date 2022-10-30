@@ -1,18 +1,8 @@
 pipeline {
     agent any  // cont-slave / ec2-slave
-    
-    tools {
 
-        git "Default"
-    }
     stages {
-        stage('Preperation') {
-            steps {
-                // Get some code from a GitHub repository
-                git 'https://github.com/MohamedAtef11/bakehouse-ITI.git'
 
-            }
-        }
         
         stage('Ci') {
             steps {
