@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins-slave
+  labels:
+    app: jenkins-slave
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jenkins
+  template:
+    metadata:
+      labels:
+        app: jenkins
+    spec:
+      containers:
+      - name: jenkins-slave
+        image: ahmedhedihed/jenkins-slave
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 22
+        volumeMounts:
+        - mountPath: /var/run/docker.sock
+          name: docker-sock
+
+      volumes:
+      - name: docker-sock
+        hostPath:
+          path: /var/run/docker.sock
+    
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins-slave
+spec:
+  type: ClusterIP
+  selector:
+    app: jenkins
+  ports:
+    - protocol: TCP 
+      port: 22
+      targetPort: 22
