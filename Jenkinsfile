@@ -31,11 +31,11 @@ pipeline {
                     // Change context with related namespace
                     // sh "kubectl config set-context $(kubectl config current-context)"   // --namespace=${namespace}
 
-                      // sh 'cat $kubecfg > ~/.kube/config'
+                      sh 'cat $kubecfg > ~/.kube/config'
                        sh """
                             
-                            kubectl apply  --config=$kubecfg -f Deployment/deploy.yaml
-                            kubectl apply  --config=$kubecfg  -f Deployment/service.yaml
+                            kubectl apply -f Deployment/deploy.yaml
+                            kubectl apply -f Deployment/service.yaml
                             
                        
                        """
