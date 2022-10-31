@@ -49,8 +49,8 @@ pipeline {
 
                             sh """
                                     export BUILD_NUMBER=\$(cat ../build-num.txt)
-                                    cat Deployment/deploy.yaml | envsubst > Deployment/deploy.yaml
                                     mv Deployment/deploy.yaml Deployment/deploy.yaml.tmp
+                                    cat Deployment/deploy.yaml.tmp | envsubst > Deployment/deploy.yaml
                                     rm -f Deployment/deploy.yaml.tmp
                                     kubectl apply --kubeconfig=${kubecfg} -f Deployment
         
