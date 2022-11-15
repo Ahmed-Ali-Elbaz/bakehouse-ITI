@@ -13,7 +13,7 @@ pipeline {
         stage('Build App Image') {
           steps {
             script {
-              dockerImage = docker.build registry + ":V$BUILD_NUMBER"
+              dockerImage = docker.build registry + ":$BUILD_NUMBER"
             }
           }
         }
@@ -23,7 +23,7 @@ pipeline {
           steps{
             script {
               docker.withRegistry('', registryCredential) {
-                dockerImage.push("V$BUILD_NUMBER")
+                dockerImage.push("$BUILD_NUMBER")
 
               }
             }
