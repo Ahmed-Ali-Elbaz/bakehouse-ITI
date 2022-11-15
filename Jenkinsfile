@@ -1,9 +1,5 @@
 pipeline {
 
-    agent any
-	tools {
-        Docker "docker"
-    }
 
     environment {
 
