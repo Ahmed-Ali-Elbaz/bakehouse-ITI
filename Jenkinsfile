@@ -1,45 +1,77 @@
 pipeline {
+    agent any // cont-slave / ec2-slave
 
-    agent any
-    environment {
+    stages {
 
-        registry = "ahmedhedihed/bakehouse"
-        registryCredential = "dockerhub"
-    }
+        // CI Stage
+        stage('Ci') {
+            steps {
 
-    stages{
+ 
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) { 
+                    
+                    sh """
+                        
+                        docker build .  -t ahmedhedihed/bakehouse:$BUILD_NUMBER
+                        docker login -u ${USERNAME} -p ${PASSWORD}
+                        docker push ahmedhedihed/bakehouse:$BUILD_NUMBER
+                        echo ${BUILD_NUMBER} > ../build-num.txt
+                        
+                    """
+                    
+                    }
 
-        stage('Build App Image') {
-          steps {
-            script {
-              dockerImage = docker.build registry + ":$BUILD_NUMBER"
             }
-          }
+
+
+
         }
 
 
-        stage('Upload Image'){
-          steps{
-            script {
-              docker.withRegistry('', registryCredential) {
-                dockerImage.push("$BUILD_NUMBER")
-
-              }
-            }
-          }
-        }
 
 
 
-      
+        // CD Stage
+        // stage('CD') {
+        //     steps {
 
+        //         script {    
+
+        //             if ( env.BRANCH_NAME == "dev" || env.BRANCH_NAME == "test" || env.BRANCH_NAME == "prod" ) {   
+                   
+        //                 withCredentials([file(credentialsId: 'cluster', variable: 'kubecfg')]){
+
+        //                     sh """
+        //                             export BUILD_NUMBER=\$(cat ../build-num.txt)
+        //                             mv Deployment/deploy.yaml Deployment/deploy.yaml.tmp
+        //                             cat Deployment/deploy.yaml.tmp | envsubst > Deployment/deploy.yaml
+        //                             rm -f Deployment/deploy.yaml.tmp
+        //                             kubectl apply --kubeconfig=${kubecfg} -f Deployment
+        
+                                    
+                            
+        //                     """
+
+                                
+                            
+        //                 }
+        //             }    
+                 
+        //         }
+                 
+        //     }     
+
+            
+        // }         
+   
+
+   
+   
+        
+        
+        
+        
+        
     }
-
-
 }
-
-
-
-
-
 
