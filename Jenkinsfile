@@ -1,5 +1,5 @@
 pipeline {
-    agent any // cont-slave / ec2-slave
+    agent {label "slave"}
 
     stages {
 
