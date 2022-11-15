@@ -32,37 +32,31 @@ pipeline {
 
 
         // CD Stage
-        // stage('CD') {
-        //     steps {
+        stage('CD') {
+            steps {
 
-        //         script {    
-
-        //             if ( env.BRANCH_NAME == "dev" || env.BRANCH_NAME == "test" || env.BRANCH_NAME == "prod" ) {   
                    
-        //                 withCredentials([file(credentialsId: 'cluster', variable: 'kubecfg')]){
+                withCredentials([file(credentialsId: 'cluster', variable: 'kubecfg')]){
 
-        //                     sh """
-        //                             export BUILD_NUMBER=\$(cat ../build-num.txt)
-        //                             mv Deployment/deploy.yaml Deployment/deploy.yaml.tmp
-        //                             cat Deployment/deploy.yaml.tmp | envsubst > Deployment/deploy.yaml
-        //                             rm -f Deployment/deploy.yaml.tmp
-        //                             kubectl apply --kubeconfig=${kubecfg} -f Deployment
-        
-                                    
-                            
-        //                     """
+                    sh """
+                            export BUILD_NUMBER=\$(cat ../build-num.txt)
+                            mv Deployment/deploy.yaml Deployment/deploy.yaml.tmp
+                            cat Deployment/deploy.yaml.tmp | envsubst > Deployment/deploy.yaml
+                            rm -f Deployment/deploy.yaml.tmp
+                            kubectl apply --kubeconfig=${kubecfg} -f Deployment
 
-                                
                             
-        //                 }
-        //             }    
-                 
-        //         }
-                 
-        //     }     
+                    
+                    """
+
+                        
+                    
+                }
+                    
+            }     
 
             
-        // }         
+        }     
    
 
    
